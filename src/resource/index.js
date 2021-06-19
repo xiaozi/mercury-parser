@@ -64,7 +64,11 @@ const Resource = {
   encodeDoc({ content, contentType }) {
     const encoding = getEncoding(contentType);
     let decodedContent = iconv.decode(content, encoding);
-    let $ = cheerio.load(decodedContent);
+    let $ = cheerio.load(decodedContent, {
+      normalizeWhitespace: true,
+      xmlMode: false,
+      decodeEntities: true
+    });
 
     // after first cheerio.load, check to see if encoding matches
     const contentTypeSelector = cheerio.browser
@@ -78,7 +82,11 @@ const Resource = {
     // if encodings in the header/body dont match, use the one in the body
     if (metaContentType && properEncoding !== encoding) {
       decodedContent = iconv.decode(content, properEncoding);
-      $ = cheerio.load(decodedContent);
+      $ = cheerio.load(decodedContent, {
+        normalizeWhitespace: true,
+        xmlMode: false,
+        decodeEntities: true
+      });
     }
 
     return $;

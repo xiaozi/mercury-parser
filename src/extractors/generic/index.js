@@ -31,7 +31,11 @@ const GenericExtractor = {
     const { html, $ } = options;
 
     if (html && !$) {
-      const loaded = cheerio.load(html);
+      const loaded = cheerio.load(html, {
+        normalizeWhitespace: true,
+        xmlMode: false,
+        decodeEntities: true
+      });
       options.$ = loaded;
     }
 
